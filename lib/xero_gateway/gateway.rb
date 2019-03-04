@@ -650,6 +650,13 @@ module XeroGateway
       parse_response(response_xml, {:request_params => request_params}, {:request_signature => 'GET/branding_themes'})
     end
 
+    # Send an approved invoice from Xero
+    #
+    def email_invoice(id)
+      raw_response = http_post(@client, "#{@xero_url}/Invoices/#{id}/Email", "", {})
+      return raw_response == ""
+    end
+
     private
 
     def get_contact(contact_id = nil, contact_number = nil)
