@@ -100,13 +100,13 @@ module XeroGateway
         # 'rate limit exceeded' when more than 60 requests have been made in
         # a second.
         case (error_details["oauth_problem"].first)
-          when "token_expired"        then raise OAuth::TokenExpired.new(description)
-          when "consumer_key_unknown" then raise OAuth::TokenInvalid.new(description)
-          when "token_rejected"       then raise OAuth::TokenInvalid.new(description)
-          when "rate limit exceeded"  then raise OAuth::RateLimitExceeded.new(description)
+          when "token_expired"        then raise OAuth::TokenExpired.new(description, error_details)
+          when "consumer_key_unknown" then raise OAuth::TokenInvalid.new(description, error_details)
+          when "token_rejected"       then raise OAuth::TokenInvalid.new(description, error_details)
+          when "rate limit exceeded"  then raise OAuth::RateLimitExceeded.new(description, error_details)
           else
             message = (error_details["oauth_problem"].first || "Unknown Error") + ': ' + description
-            raise OAuth::UnknownError.new(message)
+            raise OAuth::UnknownError.new(message, error_details)
         end
       end
 
